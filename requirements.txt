@@ -1,0 +1,11 @@
+erniebot
+pages
+streamlit-option-menu
+extra_streamlit_components
+#voice
+openpyxl
+audiorecorder
+openai-whisper
+pygame
+#baidu-aip
+poetry
