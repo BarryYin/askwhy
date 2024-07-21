@@ -10,3 +10,5 @@ pygame
 baidu-aip
 poetry
 streamlit
+watchdog
+pybase64
