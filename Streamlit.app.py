@@ -2,25 +2,24 @@ import csv
 import streamlit as st
 import os
 # pip安装命令
-
-install_command = "pip install streamlit-option-menu"
-install_command2 = "pip install openai-whisper"
-install_command1 = "pip install extra_streamlit_components"
-install_command3 = "pip install --upgrade erniebot"
-install_command4 = "pip install streamlit-audiorecorder"
-install_command5 = "pip install poetry"
-install_command6 = "pip install pygame"
-install_command7 = "pip install audiorecorder"
+# install_command = "pip install streamlit-option-menu"
+# install_command2 = "pip install openai-whisper"
+# install_command1 = "pip install extra_streamlit_components"
+# install_command3 = "pip install --upgrade erniebot"
+# install_command4 = "pip install streamlit-audiorecorder"
+# install_command5 = "pip install poetry"
+# install_command6 = "pip install pygame"
+# install_command7 = "pip install audiorecorder"
 #install_command = "pip install -r requirements.txt"
 # 执行安装命令
-os.system(install_command)
-os.system(install_command1)
-os.system(install_command2)
-os.system(install_command3)
-os.system(install_command4)
-os.system(install_command5)
-os.system(install_command6)
-os.system(install_command7)
+# os.system(install_command)
+# os.system(install_command1)
+# os.system(install_command2)
+# os.system(install_command3)
+# os.system(install_command4)
+# os.system(install_command5)
+# os.system(install_command6)
+# os.system(install_command7)
 
 
 import json

@@ -1,11 +1,12 @@
 erniebot
 pages
 streamlit-option-menu
-extra_streamlit_components
+extra-streamlit-components
 #voice
 openpyxl
-audiorecorder
+streamlit-audiorecorder
 openai-whisper
 pygame
-#baidu-aip
+baidu-aip
 poetry
+streamlit
