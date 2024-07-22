@@ -101,7 +101,8 @@ def STT(audio):
     # wav_file.close()
     filename = 'output1.wav'  # 或者保持为 'input.mp3'，取决于您的需求
     audio.export(filename, format="wav")  # 根据文件扩展名更改 format 参数 
-    model = whisper.load_model("small")
+    #model = whisper.load_model("small")
+    model = whisper.load_model("tiny")
     text = model.transcribe("output1.wav",initial_prompt="请识别语言，并翻译成对应的文字，如果是中文请翻译成简体中文，并添加标点符号")
     print(text['text'])
     return text['text']
@@ -1178,6 +1179,8 @@ def main():
                 st.session_state['is_win'] = is_win_value
             else:
                 print(f"未找到用户名为{st.session_state['username']}的记录。")
+                add_winner_to_csv(st.session_state['username'],st.session_state['is_win'])
+                st.rerun()
                 #st.session_state['is_win'] = 0
             st.markdown("""
                 <div style="text-align: center;">
@@ -1302,27 +1305,40 @@ def main():
 
 
 
-    elif selected == "排行榜":
+    elif selected == "排行榜":   
         st.session_state.page = '排行榜'
         #st.write("Welcome to Page 4")
         # 读取 CSV 文件
-        df = pd.read_csv('scores.csv')
-        # 删除 password 字段
-        df = df.drop('Password', axis=1)
-        # 根据分数降序排序并重置索引，不保留原索引
-        df_sorted = df.sort_values(by='score', ascending=False).reset_index(drop=True)
+        # 使用 st.columns 创建两列
+        col1, col2 = st.columns(2)
 
-        # 将 DataFrame 转换为 HTML，不显示索引
-        html = df_sorted.to_html(index=False)
+         # 在第一列中展示原有的排行榜
+        with col1:
+            df = pd.read_csv('scores.csv')
+            # 删除 password 字段
+            df = df.drop('Password', axis=1)
+            # 根据分数降序排序并重置索引，不保留原索引
+            df_sorted = df.sort_values(by='score', ascending=False).reset_index(drop=True)
 
-        # 显示排行榜，不显示索引
-        st.subheader('基础问答排行榜')
-        st.markdown(html, unsafe_allow_html=True)
+            # 将 DataFrame 转换为 HTML，不显示索引
+            html = df_sorted.to_html(index=False)
 
-
-
-        
-        #print(st.session_state['score'])
+            # 显示排行榜，不显示索引
+            st.subheader('基础问答排行榜')
+            st.markdown(html, unsafe_allow_html=True)
+        with col2:
+            df1 = pd.read_csv('winners.csv')
+            # 删除 password 字段
+            df1 = df1.drop('is_win', axis=1)
+            # 根据分数降序排序并重置索引，不保留原索引
+            #df_sorted = df.sort_values(by='score', ascending=False).reset_index(drop=True)
+            # 将 DataFrame 转换为 HTML，不显示索引
+            #html = df_sorted.to_html(index=False)
+            html = df1.to_html(index=False)
+            # 显示排行榜，不显示索引
+            st.subheader('冠军榜')
+            st.markdown(html, unsafe_allow_html=True)
+            st.write("排名不分先后")
     
     elif selected == "查看答案":
         st.session_state.page = '查看答案'

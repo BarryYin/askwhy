@@ -1,6 +1,8 @@
 import requests
 import base64
 import pygame
+import streamlit as st
+import time
 
 def split_text(text, limit=60):
     """
@@ -33,19 +35,52 @@ def process_text(text):
     for part in parts:
         # 假设 send_request 是发送请求的函数
         create_voise(part)
+        time.sleep(4)
         # 可能需要等待或处理响应
 
     
 def play_audio(file_name):
     # 初始化 pygame 混音器
-    pygame.mixer.init()
-    # 加载音频文件
-    pygame.mixer.music.load(file_name)
-    # 播放音频
-    pygame.mixer.music.play()
-    # 等待音频播放完成
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)
+    # pygame.mixer.init()
+    # # 加载音频文件
+    # pygame.mixer.music.load(file_name)
+    # # 播放音频
+    # pygame.mixer.music.play()
+    # # 等待音频播放完成
+    # while pygame.mixer.music.get_busy():
+    #     pygame.time.Clock().tick(10)
+    audio_file = open(file_name, 'rb')
+    audio_bytes = audio_file.read()
+    base64_audio = base64.b64encode(audio_bytes).decode('utf-8')
+
+    # 检查是否收到了音频播放结束的事件
+    if 'audio_ended' not in st.session_state:
+        st.session_state.audio_ended = False
+    
+    # 创建一个自动播放的 HTML audio 标签
+    audio_html = f'<audio autoplay><source src="data:audio/mp3;base64,{base64_audio}" type="audio/mp3"></audio>'
+#     audio_html = f"""
+# <audio id="audioPlayer" autoplay>
+#   <source src="data:audio/mp3;base64,{base64_audio}" type="audio/mp3">
+#   Your browser does not support the audio element.
+# </audio>
+# <script>
+# document.getElementById('audioPlayer').onended = function() {{
+#     // 音频播放结束时，通过Streamlit的客户端事件系统发送消息
+#     window.parent.postMessage({{
+#         'type': 'streamlit:customEvent',
+#         'key': 'audioEnded',
+#         'isStreamlitMessage': true,
+#     }}, '*');
+# }};
+# </script>
+# """
+    
+    # 使用 Streamlit 显示 HTML
+    st.markdown(audio_html, unsafe_allow_html=True)
+    # 根据音频播放结束的事件来执行特定的Python代码
+    # if st.session_state.audio_ended:
+    #     print("音频播放已结束，执行下一步操作。")
 
 API_KEY = "IAINmGmzxZ9SyNeqfXkB4jeE"
 SECRET_KEY = "F3ArFlkOHyBStDqoDuK4chy984VQWIdX"
@@ -94,6 +129,7 @@ def create_voise(text):
             print(f"音频文件已保存为 {file_name}")
             # 保存文件后直接播放
             play_audio(file_name)
+            #time.sleep(10)
         except Exception as e:
             print(f"解析 JSON 时出错：{e}")
     else:
